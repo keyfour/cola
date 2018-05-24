@@ -34,7 +34,7 @@ public abstract class BaseActivityView<V> extends AppCompatActivity implements V
     /**
      * Instance of {@link PresenterContract} to interact with presenter
      */
-    PresenterContract presenterContract;
+    PresenterContract presenter;
 
     @Override
     public Context getViewContext() {
@@ -47,24 +47,24 @@ public abstract class BaseActivityView<V> extends AppCompatActivity implements V
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (presenterContract != null) {
-            presenterContract.setView(this);
+        if (presenter != null) {
+            presenter.setView(this);
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (presenterContract != null) {
-            presenterContract.start();
+        if (presenter != null) {
+            presenter.start();
         }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (presenterContract != null) {
-            presenterContract.stop();
+        if (presenter != null) {
+            presenter.stop();
         }
     }
 
