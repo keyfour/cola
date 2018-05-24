@@ -34,7 +34,7 @@ public abstract class BaseActivityView<V> extends AppCompatActivity implements V
     /**
      * Instance of {@link PresenterContract} to interact with presenter
      */
-    PresenterContract presenter;
+    protected PresenterContract presenter;
 
     @Override
     public Context getViewContext() {
