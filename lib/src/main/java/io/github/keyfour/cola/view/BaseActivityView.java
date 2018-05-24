@@ -47,7 +47,9 @@ public abstract class BaseActivityView<V> extends AppCompatActivity implements V
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenterContract.setView(this);
+        if (presenterContract != null) {
+            presenterContract.setView(this);
+        }
     }
 
     @Override
