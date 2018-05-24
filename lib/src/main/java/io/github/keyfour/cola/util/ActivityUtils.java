@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Alex Karpov <keyfour13@gmail.com>
+ * Copyright 2018 Alex Karpov <keyfour13@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.keyfour.cola.util;
+package io.github.keyfour.cola.util;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
