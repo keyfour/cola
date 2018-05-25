@@ -17,45 +17,53 @@
 package com.github.keyfour.example;
 
 
+import android.support.annotation.NonNull;
+
 import io.github.keyfour.cola.contract.RequestPresenterContract;
 import io.github.keyfour.cola.contract.ViewContract;
 import io.github.keyfour.cola.presenter.BasePresenter;
 import io.github.keyfour13.rxcola.usecase.RxIoThreadExecutor;
 import io.github.keyfour13.rxcola.usecase.RxMainThreadExecutor;
+import io.github.keyfour13.rxcola.usecase.RxParams;
 import io.reactivex.functions.Consumer;
 
 /**
  * @author Alex Karpov <keyfour13@gmail.com> 2018
  */
 public class ExamplePresenter extends BasePresenter implements
-        RequestPresenterContract<Integer,Integer> {
+        RequestPresenterContract<String,String> {
 
-    private ExampleUseCase useCase;
+    private final ExampleUseCase useCase = new ExampleUseCase();
 
-    public ExamplePresenter() {
-        useCase = new ExampleUseCase(RxIoThreadExecutor.getInstance(),
-                RxMainThreadExecutor.getInstance());
+    @Override
+    public void start() {
+        request(null,null);
     }
 
     @Override
-    public void request(Integer type, Integer data) {
-        useCase.build(new ExampleUseCase.ExampleParams(view.getViewContext(),
-                new ExampleConsumer(view)));
-        useCase.execute(new ExampleUseCase.ExampleParams(view.getViewContext(),
-                new ExampleConsumer(view)));
+    public void request(String type, String data) {
+        RxParams<String, String> params =
+                ExampleUseCase.ExampleParams.build(view.getViewContext())
+                        .setMainExecutor(RxIoThreadExecutor.getInstance())
+                        .setPostExecutor(RxMainThreadExecutor.getInstance())
+                        .setOnNextConsumer(new ExampleConsumer(view));
+        useCase.configure(params).execute();
+
     }
 
     public static class ExampleConsumer implements Consumer<String> {
 
-        private ViewContract view;
+        private ViewContract<String> view;
 
-        public ExampleConsumer(ViewContract view) {
+        ExampleConsumer(@NonNull ViewContract<String> view) {
             this.view = view;
         }
 
         @Override
         public void accept(String s) throws Exception {
-            view.updateView(s);
+            if (s != null) {
+                view.updateView(s);
+            }
         }
     }
 

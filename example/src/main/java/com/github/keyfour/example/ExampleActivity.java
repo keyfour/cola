@@ -33,6 +33,8 @@ public class ExampleActivity extends BaseActivityView<String> {
     public void onCreate(Bundle onSavedInstanceState) {
         this.presenter = new ExamplePresenter();
         super.onCreate(onSavedInstanceState);
+        setContentView(R.layout.example_activity);
+        textView = (TextView) findViewById(R.id.text_view);
         this.presenter.setView(this);
     }
 

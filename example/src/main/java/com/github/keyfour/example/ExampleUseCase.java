@@ -18,29 +18,29 @@
 package com.github.keyfour.example;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
-import io.github.keyfour.cola.usecase.Executor;
 import io.github.keyfour13.rxcola.usecase.RxParams;
 import io.github.keyfour13.rxcola.usecase.RxUseCase;
 import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
 
-public class ExampleUseCase extends RxUseCase<String> {
+public class ExampleUseCase extends RxUseCase<String, String> {
 
-    protected ExampleUseCase(Executor mainExecutor, Executor postExecutor) {
-        super(mainExecutor, postExecutor);
-    }
-
-    @Override
-    public Observable<String> build(RxParams<String> params) {
-        return Observable.just(true).map(aBoolean -> ((ExampleParams)params).str);
-    }
-
-    public static class ExampleParams extends RxParams<String> {
+    public static class ExampleParams extends RxParams<String, String> {
         final String str = "Hello World!";
 
-        public ExampleParams(Context context, Consumer<String> consumer) {
-            super(context, consumer);
+        protected ExampleParams(@NonNull Context context) {
+            super(context);
+            this.observable = Observable.just(str);
+        }
+
+        public static ExampleParams build(@NonNull Context context) {
+            return new ExampleParams(context);
+        }
+
+        public ExampleParams setValue(String value) {
+            setValues(value);
+            return this;
         }
     }
 }
