@@ -28,7 +28,7 @@ import io.github.keyfour.cola.contract.ViewContract;
  */
 public class BasePresenter implements PresenterContract {
 
-    private ViewContract view;
+    protected ViewContract view;
 
     @Override
     public void start() { /* Not required */ }

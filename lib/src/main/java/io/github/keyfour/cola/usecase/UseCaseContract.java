@@ -19,7 +19,7 @@ package io.github.keyfour.cola.usecase;
 
 public interface UseCaseContract<T, P> {
 
-    T build();
+    T build(P params);
     void execute(P params);
     void cancel();
 
