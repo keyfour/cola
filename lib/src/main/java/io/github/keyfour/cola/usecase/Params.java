@@ -17,8 +17,12 @@
 
 package io.github.keyfour.cola.usecase;
 
-public interface Executor<S> {
+import android.content.Context;
 
-    S getScheduler();
+public class Params {
+    final Context context;
 
+    public Params(Context context) {
+        this.context = context;
+    }
 }
