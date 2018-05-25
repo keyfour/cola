@@ -17,42 +17,39 @@
 
 package io.github.keyfour13.rxcola.usecase;
 
-import io.github.keyfour.cola.usecase.Executor;
 import io.github.keyfour.cola.usecase.UseCase;
-import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
-public abstract class RxUseCase<T> extends UseCase<Observable<T>, RxParams<T>> {
+public class RxUseCase<R,T> extends UseCase<RxParams<R,T>> {
 
-    private CompositeDisposable disposables;
+    protected CompositeDisposable disposables = new CompositeDisposable();
+    protected RxParams<R,T> params;
 
-    protected RxUseCase(Executor mainExecutor, Executor postExecutor) {
-        super(mainExecutor, postExecutor);
+    @Override
+    public UseCase configure(RxParams<R, T> params) {
+        this.params = params;
+        return this;
     }
 
     @Override
-    public abstract Observable<T> build(RxParams<T> params);
-
-    @Override
-    public void execute(RxParams<T> params) {
-        final Observable<T> observable = this.build(params)
-                .subscribeOn(((RxThreadExecutor)mainExecutor).getScheduler())
-                .observeOn(((RxThreadExecutor)postExecutor).getScheduler());
+    public RxUseCase<R,T> execute() {
         Disposable disposable;
         if (params.hasOnErrorConsumer()) {
-            disposable = observable.subscribe(params.getOnNextConsumer(),
+            disposable = params.getObservable().subscribe(params.getOnNextConsumer(),
                     params.getOnErrorConsumer());
         } else {
-            disposable = observable.subscribe(params.getOnNextConsumer());
+            disposable = params.getObservable().subscribe(params.getOnNextConsumer());
         }
         disposables.add(disposable);
+        return this;
     }
 
     @Override
-    public void cancel() {
-        if (!disposables.isDisposed()) {
+    public RxUseCase<R,T> cancel() {
+        if (disposables != null && !disposables.isDisposed()) {
             disposables.dispose();
         }
+        return this;
     }
 }

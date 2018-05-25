@@ -17,11 +17,11 @@
 
 package io.github.keyfour.cola.usecase;
 
-public interface UseCaseContract<T, P> {
+public interface UseCaseContract<P> {
 
-    T build(P params);
-    void execute(P params);
-    void cancel();
+    UseCaseContract configure(P params);
+    UseCaseContract execute();
+    UseCaseContract cancel();
 
 }
 

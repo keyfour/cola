@@ -19,10 +19,19 @@ package io.github.keyfour.cola.usecase;
 
 import android.content.Context;
 
-public class Params {
+public class Params<T> {
     final Context context;
+    private T values;
 
     public Params(Context context) {
         this.context = context;
+    }
+
+    public void setValues(T values) {
+        this.values = values;
+    }
+
+    public T getValues() {
+        return values;
     }
 }

@@ -17,20 +17,12 @@
 
 package io.github.keyfour.cola.usecase;
 
-public abstract class UseCase<T, P> implements UseCaseContract<T, P> {
+public abstract class UseCase<P> implements UseCaseContract<P> {
 
-    protected final Executor mainExecutor;
-    protected final Executor postExecutor;
+    public abstract UseCase configure(P params);
 
-    protected UseCase(Executor mainExecutor, Executor postExecutor) {
-        this.mainExecutor = mainExecutor;
-        this.postExecutor = postExecutor;
-    }
+    public abstract UseCase execute();
 
-    public abstract T build(P params);
-
-    public abstract void execute(P params);
-
-    public abstract void cancel();
+    public abstract UseCase cancel();
 
 }
