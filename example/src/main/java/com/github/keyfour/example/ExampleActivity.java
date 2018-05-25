@@ -25,7 +25,7 @@ import io.github.keyfour.cola.view.BaseActivityView;
 /**
  * @author Alex Karpov <keyfour13@gmail.com> 2018
  */
-public class ExampleActivity extends BaseActivityView<Integer> {
+public class ExampleActivity extends BaseActivityView<String> {
 
     TextView textView;
 
@@ -37,7 +37,8 @@ public class ExampleActivity extends BaseActivityView<Integer> {
     }
 
     @Override
-    public void updateView(@NonNull Integer model) {
-        textView.setText(model.toString());
+    public void updateView(@NonNull String model) {
+        textView.setText(model);
     }
+
 }

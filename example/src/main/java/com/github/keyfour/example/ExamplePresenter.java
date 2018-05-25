@@ -16,8 +16,13 @@
 
 package com.github.keyfour.example;
 
+
 import io.github.keyfour.cola.contract.RequestPresenterContract;
+import io.github.keyfour.cola.contract.ViewContract;
 import io.github.keyfour.cola.presenter.BasePresenter;
+import io.github.keyfour13.rxcola.usecase.RxIoThreadExecutor;
+import io.github.keyfour13.rxcola.usecase.RxMainThreadExecutor;
+import io.reactivex.functions.Consumer;
 
 /**
  * @author Alex Karpov <keyfour13@gmail.com> 2018
@@ -25,8 +30,37 @@ import io.github.keyfour.cola.presenter.BasePresenter;
 public class ExamplePresenter extends BasePresenter implements
         RequestPresenterContract<Integer,Integer> {
 
+    private ExampleUseCase useCase;
+
+    public ExamplePresenter() {
+        useCase = new ExampleUseCase(RxIoThreadExecutor.getInstance(),
+                RxMainThreadExecutor.getInstance());
+    }
+
     @Override
     public void request(Integer type, Integer data) {
+        useCase.build(new ExampleUseCase.ExampleParams(view.getViewContext(),
+                new ExampleConsumer(view)));
+        useCase.execute(new ExampleUseCase.ExampleParams(view.getViewContext(),
+                new ExampleConsumer(view)));
+    }
 
+    public static class ExampleConsumer implements Consumer<String> {
+
+        private ViewContract view;
+
+        public ExampleConsumer(ViewContract view) {
+            this.view = view;
+        }
+
+        @Override
+        public void accept(String s) throws Exception {
+            view.updateView(s);
+        }
+    }
+
+    @Override
+    public void stop() {
+        useCase.cancel();
     }
 }
