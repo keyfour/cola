@@ -19,35 +19,27 @@ package com.github.keyfour.example;
 
 import android.support.annotation.NonNull;
 
-import io.github.keyfour.cola.contract.RequestPresenterContract;
+import io.github.keyfour.cola.contract.SingleRequestPresenterContract;
 import io.github.keyfour.cola.contract.ViewContract;
 import io.github.keyfour.cola.presenter.BasePresenter;
-import io.github.keyfour13.rxcola.usecase.IoThreadExecutor;
-import io.github.keyfour13.rxcola.usecase.MainThreadExecutor;
-import io.github.keyfour13.rxcola.usecase.Params;
 import io.reactivex.functions.Consumer;
 
 /**
  * @author Alex Karpov <keyfour13@gmail.com> 2018
  */
-public class ExamplePresenter extends BasePresenter implements
-        RequestPresenterContract<String,String> {
+public class ExamplePresenter extends BasePresenter<String>
+        implements SingleRequestPresenterContract<String, String> {
 
     private final ExampleUseCase useCase = new ExampleUseCase();
 
     @Override
     public void start() {
-        request(null,null);
+        request(null);
     }
 
     @Override
-    public void request(String type, String data) {
-        Params<String, String> params =
-                ExampleUseCase.ExampleParams.build(view.getViewContext())
-                        .setMainExecutor(IoThreadExecutor.getInstance())
-                        .setPostExecutor(MainThreadExecutor.getInstance())
-                        .setOnNextConsumer(new ExampleConsumer(view));
-        useCase.configure(params).execute();
+    public void request(String params) {
+        useCase.execute(new ExampleConsumer(view));
 
     }
 
@@ -60,7 +52,7 @@ public class ExamplePresenter extends BasePresenter implements
         }
 
         @Override
-        public void accept(String s) throws Exception {
+        public void accept(String s) {
             if (s != null) {
                 view.updateView(s);
             }
@@ -69,6 +61,6 @@ public class ExamplePresenter extends BasePresenter implements
 
     @Override
     public void stop() {
-        useCase.cancel();
+        useCase.unsubscribe();
     }
 }

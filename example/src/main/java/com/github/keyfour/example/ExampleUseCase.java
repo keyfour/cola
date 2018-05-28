@@ -17,34 +17,15 @@
 
 package com.github.keyfour.example;
 
-import android.content.Context;
-import android.support.annotation.NonNull;
-
+import io.github.keyfour13.rxcola.usecase.IoToMainThreadUseCase;
 import io.github.keyfour13.rxcola.usecase.Params;
-import io.github.keyfour13.rxcola.usecase.UseCase;
 import io.reactivex.Observable;
 
-public class ExampleUseCase extends UseCase<String, String> {
+public class ExampleUseCase extends IoToMainThreadUseCase<String> {
 
-    public ExampleUseCase() {
-        super(threadExecutor, postExecutionThread, disposables);
+    @Override
+    public Observable<String> buildUseCaseObservable(Params params) {
+        return Observable.just("Hello World");
     }
 
-    public static class ExampleParams extends Params<String, String> {
-        final String str = "Hello World!";
-
-        protected ExampleParams(@NonNull Context context) {
-            super(context);
-            this.observable = Observable.just(str);
-        }
-
-        public static ExampleParams build(@NonNull Context context) {
-            return new ExampleParams(context);
-        }
-
-        public ExampleParams setValue(String value) {
-            setValues(value);
-            return this;
-        }
-    }
 }
