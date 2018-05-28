@@ -28,11 +28,13 @@ public abstract class UseCase<T>  {
     private final ThreadExecutor threadExecutor;
     private final ThreadExecutor postExecutionThread;
     private final CompositeDisposable disposables;
+    private final Consumer<? super Throwable> errorConsumer;
 
     public UseCase(ThreadExecutor threadExecutor, ThreadExecutor postExecutionThread) {
         this.threadExecutor = threadExecutor;
         this.postExecutionThread = postExecutionThread;
         this.disposables = new CompositeDisposable();
+        this.errorConsumer = new ErrorConsumer();
     }
 
     /**
@@ -42,17 +44,47 @@ public abstract class UseCase<T>  {
 
     /**
      *
-     * Execute for end-point observers
+     * Execute for end-point consumers
      *
-     * @param consumer end-point {@link Observer}
+     * @param consumer end-point {@link Consumer}
+     * @param errorConsumer error(@link {@link Consumer}
+     * @param params parameters for execution
+     */
+    public void execute(Consumer<T> consumer, Consumer<? super Throwable> errorConsumer,
+                        Params params) {
+        final Observable<T> observable = this.buildUseCaseObservable(params)
+                .subscribeOn(threadExecutor.getScheduler())
+                .observeOn(postExecutionThread.getScheduler());
+        Disposable disposable = observable.subscribe(consumer, errorConsumer);
+        disposables.add(disposable);
+    }
+
+    /**
+     *
+     * Execute for end-point consumers
+     *
+     * @param consumer end-point {@link Consumer}
      * @param params parameters for execution
      */
     public void execute(Consumer<T> consumer, Params params) {
         final Observable<T> observable = this.buildUseCaseObservable(params)
                 .subscribeOn(threadExecutor.getScheduler())
                 .observeOn(postExecutionThread.getScheduler());
-        Disposable disposable = observable.subscribe(consumer);
+        Disposable disposable = observable.subscribe(consumer, errorConsumer);
         disposables.add(disposable);
+    }
+
+    /**
+     * Execute for end-point observer
+     *
+     * @param observer end-point {@link Observer}
+     * @param params {@link Params} for execution
+     */
+    public void execute(Observer<T> observer, Params params) {
+        final Observable<T> observable = this.buildUseCaseObservable(params)
+                .subscribeOn(threadExecutor.getScheduler())
+                .observeOn(postExecutionThread.getScheduler());
+        observable.safeSubscribe(observer);
     }
 
     /**
