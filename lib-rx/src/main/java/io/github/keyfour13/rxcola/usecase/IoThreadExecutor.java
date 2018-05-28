@@ -20,7 +20,7 @@ package io.github.keyfour13.rxcola.usecase;
 import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
 
-public class IoThreadExecutor extends ThreadExecutor {
+public class IoThreadExecutor implements ThreadExecutor {
 
     private static IoThreadExecutor executor;
 

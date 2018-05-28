@@ -26,6 +26,10 @@ import io.reactivex.Observable;
 
 public class ExampleUseCase extends UseCase<String, String> {
 
+    public ExampleUseCase() {
+        super(threadExecutor, postExecutionThread, disposables);
+    }
+
     public static class ExampleParams extends Params<String, String> {
         final String str = "Hello World!";
 

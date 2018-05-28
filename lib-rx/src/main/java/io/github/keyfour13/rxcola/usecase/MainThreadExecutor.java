@@ -20,7 +20,7 @@ package io.github.keyfour13.rxcola.usecase;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class MainThreadExecutor extends ThreadExecutor {
+public class MainThreadExecutor implements ThreadExecutor {
 
 
     private static MainThreadExecutor executor;

@@ -17,39 +17,64 @@
 
 package io.github.keyfour13.rxcola.usecase;
 
-import io.github.keyfour.cola.usecase.UseCase;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
-public class UseCase<R,T> extends UseCase<Params<R,T>> {
+public abstract class UseCase<T>  {
 
-    protected CompositeDisposable disposables = new CompositeDisposable();
-    protected Params<R,T> params;
+    private final ThreadExecutor threadExecutor;
+    private final ThreadExecutor postExecutionThread;
+    private final CompositeDisposable disposables;
 
-    @Override
-    public UseCase configure(Params<R, T> params) {
-        this.params = params;
-        return this;
+    public UseCase(ThreadExecutor threadExecutor, ThreadExecutor postExecutionThread) {
+        this.threadExecutor = threadExecutor;
+        this.postExecutionThread = postExecutionThread;
+        this.disposables = new CompositeDisposable();
     }
 
-    @Override
-    public UseCase<R,T> execute() {
-        Disposable disposable;
-        if (params.hasOnErrorConsumer()) {
-            disposable = params.getObservable().subscribe(params.getOnNextConsumer(),
-                    params.getOnErrorConsumer());
-        } else {
-            disposable = params.getObservable().subscribe(params.getOnNextConsumer());
-        }
+    /**
+     *  Build an {@link Observable} for executing current {@link UseCase}
+     */
+    abstract Observable<T> buildUseCaseObservable(Params params);
+
+    /**
+     *
+     * Execute for end-point observers
+     *
+     * @param consumer end-point {@link Observer}
+     * @param params parameters for execution
+     */
+    public void execute(Consumer<T> consumer, Params params) {
+        final Observable<T> observable = this.buildUseCaseObservable(params)
+                .subscribeOn(threadExecutor.getScheduler())
+                .observeOn(postExecutionThread.getScheduler());
+        Disposable disposable = observable.subscribe(consumer);
         disposables.add(disposable);
-        return this;
     }
 
-    @Override
-    public UseCase<R,T> cancel() {
-        if (disposables != null && !disposables.isDisposed()) {
+    /**
+     *
+     * Execute for intermediate observers
+     *
+     * @param params parameters for execution
+     * @return {@link Observable}
+     */
+    public Observable<T> execute(Params params) {
+        return this.buildUseCaseObservable(params)
+                .subscribeOn(threadExecutor.getScheduler())
+                .observeOn(postExecutionThread.getScheduler());
+    }
+
+
+    /**
+     * Unsubscibe from all subscriptions
+     */
+    public void unsubscribe() {
+        if (!disposables.isDisposed()) {
             disposables.dispose();
         }
-        return this;
     }
 }

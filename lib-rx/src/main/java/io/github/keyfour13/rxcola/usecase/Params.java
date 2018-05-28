@@ -18,94 +18,17 @@
 package io.github.keyfour13.rxcola.usecase;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 
-import io.github.keyfour.cola.usecase.Params;
-import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
+public abstract class Params<V> {
 
-public class Params<R, T> extends Params<T> {
+    protected Context context;
+    protected V value;
 
-    protected ThreadExecutor mainExecutor;
-    protected ThreadExecutor postExecutor;
-    protected Observable<R> observable;
-    protected Consumer<R> onNextConsumer;
-    protected Consumer<? super Throwable> onErrorConsumer;
-
-    private boolean hasOnErrorConsumer;
-
-
-    protected Params(@NonNull Context context) {
-        super(context);
-        hasOnErrorConsumer = false;
+    public Context getContext() {
+        return context;
     }
 
-    protected Params(@NonNull Context context, @NonNull Consumer<R> onNextConsumer) {
-        super(context);
-        this.onNextConsumer = onNextConsumer;
-        hasOnErrorConsumer = false;
-    }
-
-    protected Params(@NonNull Context context, @NonNull Consumer<R> onNextConsumer,
-                     @NonNull Consumer<? super Throwable> onErrorConsumer) {
-        super(context);
-        this.onNextConsumer = onNextConsumer;
-        this.onErrorConsumer = onErrorConsumer;
-        hasOnErrorConsumer = true;
-        observable = null;
-    }
-
-    protected Params(@NonNull Context context, @NonNull Observable<R> observable,
-                     @NonNull Consumer<R> onNextConsumer,
-                     @NonNull Consumer<? super Throwable> onErrorConsumer) {
-        super(context);
-        this.observable = observable;
-        this.onNextConsumer = onNextConsumer;
-        this.onErrorConsumer = onErrorConsumer;
-    }
-
-    public boolean hasOnErrorConsumer() {
-        return hasOnErrorConsumer;
-    }
-
-    public Observable<R> getObservable() {
-        return observable;
-    }
-
-    public Consumer<R> getOnNextConsumer() {
-        return onNextConsumer;
-    }
-
-    public Consumer<? super Throwable> getOnErrorConsumer() {
-        return onErrorConsumer;
-    }
-
-    public static <R,T> Params<R,T> build(@NonNull Context context) {
-        return new Params<>(context);
-    }
-
-    public Params<R,T> setObservable(@NonNull Observable<R> observable) {
-        this.observable = observable;
-        return this;
-    }
-
-    public Params<R,T> setOnNextConsumer(@NonNull Consumer<R> consumer) {
-        this.onNextConsumer = consumer;
-        return this;
-    }
-
-    public Params<R,T> setOnErrorConsumer(@NonNull Consumer<? super Throwable> consumer) {
-        this.onErrorConsumer = consumer;
-        return  this;
-    }
-
-    public Params<R,T> setMainExecutor(@NonNull ThreadExecutor executor) {
-        this.mainExecutor = executor;
-        return this;
-    }
-
-    public Params<R,T> setPostExecutor(@NonNull ThreadExecutor executor) {
-        this.postExecutor = executor;
-        return this;
+    public V getValue() {
+        return value;
     }
 }
