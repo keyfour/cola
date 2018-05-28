@@ -22,16 +22,15 @@ package io.github.keyfour.cola.contract;
  * Extention for {@link PresenterContract}
  *
  */
-public interface RequestPresenterContract<T,D> extends PresenterContract {
+public interface SingleRequestPresenterContract<T> extends PresenterContract {
 
     /**
      *
      * Perform data request
      *
-     * @param type of request
-     * @param data sending parameters
+     * @params parameters for request
      *
      */
-    void request(T type, D data);
+    void request(T params);
 
 }
