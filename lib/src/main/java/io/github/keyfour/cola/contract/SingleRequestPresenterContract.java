@@ -22,7 +22,7 @@ package io.github.keyfour.cola.contract;
  * Extention for {@link PresenterContract}
  *
  */
-public interface SingleRequestPresenterContract<T> extends PresenterContract {
+public interface SingleRequestPresenterContract<V,T> extends PresenterContract<V> {
 
     /**
      *

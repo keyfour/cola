@@ -26,9 +26,9 @@ import io.github.keyfour.cola.contract.ViewContract;
  *
  * MVP Presenter class based on {@link PresenterContract}
  */
-public class BasePresenter implements PresenterContract {
+public class BasePresenter<V> implements PresenterContract<V> {
 
-    protected ViewContract view;
+    protected ViewContract<V> view;
 
     @Override
     public void start() { /* Not required */ }
@@ -37,7 +37,7 @@ public class BasePresenter implements PresenterContract {
     public void stop() { /* Not required */ }
 
     @Override
-    public void setView(@NonNull ViewContract view) {
+    public void setView(@NonNull ViewContract<V> view) {
         this.view = view;
     }
 }

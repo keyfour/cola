@@ -22,7 +22,7 @@ package io.github.keyfour.cola.contract;
  * Base contract for presenter in MVP pattern.
  *
  */
-public interface PresenterContract {
+public interface PresenterContract<V> {
 
     /**
      * Start presenter jobs
@@ -39,7 +39,7 @@ public interface PresenterContract {
      *
      * @param view
      */
-    void setView(ViewContract view);
+    void setView(ViewContract<V> view);
 
 
 }
