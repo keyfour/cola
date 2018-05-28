@@ -19,10 +19,15 @@ package io.github.keyfour13.rxcola.usecase;
 
 import android.content.Context;
 
-public abstract class Params<V> {
+public class Params<V> {
 
-    protected Context context;
-    protected V value;
+    protected final Context context;
+    protected final V value;
+
+    public Params(Context context, V value) {
+        this.context = context;
+        this.value = value;
+    }
 
     public Context getContext() {
         return context;
