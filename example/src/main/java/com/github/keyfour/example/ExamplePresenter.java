@@ -22,9 +22,9 @@ import android.support.annotation.NonNull;
 import io.github.keyfour.cola.contract.RequestPresenterContract;
 import io.github.keyfour.cola.contract.ViewContract;
 import io.github.keyfour.cola.presenter.BasePresenter;
-import io.github.keyfour13.rxcola.usecase.RxIoThreadExecutor;
-import io.github.keyfour13.rxcola.usecase.RxMainThreadExecutor;
-import io.github.keyfour13.rxcola.usecase.RxParams;
+import io.github.keyfour13.rxcola.usecase.IoThreadExecutor;
+import io.github.keyfour13.rxcola.usecase.MainThreadExecutor;
+import io.github.keyfour13.rxcola.usecase.Params;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -42,10 +42,10 @@ public class ExamplePresenter extends BasePresenter implements
 
     @Override
     public void request(String type, String data) {
-        RxParams<String, String> params =
+        Params<String, String> params =
                 ExampleUseCase.ExampleParams.build(view.getViewContext())
-                        .setMainExecutor(RxIoThreadExecutor.getInstance())
-                        .setPostExecutor(RxMainThreadExecutor.getInstance())
+                        .setMainExecutor(IoThreadExecutor.getInstance())
+                        .setPostExecutor(MainThreadExecutor.getInstance())
                         .setOnNextConsumer(new ExampleConsumer(view));
         useCase.configure(params).execute();
 

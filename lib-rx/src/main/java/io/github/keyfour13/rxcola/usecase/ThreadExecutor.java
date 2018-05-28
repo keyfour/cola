@@ -18,25 +18,9 @@
 package io.github.keyfour13.rxcola.usecase;
 
 import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class RxMainThreadExecutor extends RxThreadExecutor {
+public interface ThreadExecutor {
 
-
-    private static RxMainThreadExecutor executor;
-
-    private RxMainThreadExecutor(){}
-
-    public static RxMainThreadExecutor getInstance() {
-        if (executor == null) {
-            executor = new RxMainThreadExecutor();
-        }
-        return executor;
-    }
-
-    @Override
-    public Scheduler getScheduler() {
-        return AndroidSchedulers.mainThread();
-    }
+    Scheduler getScheduler();
 
 }

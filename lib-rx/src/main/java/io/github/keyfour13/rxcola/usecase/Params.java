@@ -24,10 +24,10 @@ import io.github.keyfour.cola.usecase.Params;
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 
-public class RxParams<R, T> extends Params<T> {
+public class Params<R, T> extends Params<T> {
 
-    protected RxThreadExecutor mainExecutor;
-    protected RxThreadExecutor postExecutor;
+    protected ThreadExecutor mainExecutor;
+    protected ThreadExecutor postExecutor;
     protected Observable<R> observable;
     protected Consumer<R> onNextConsumer;
     protected Consumer<? super Throwable> onErrorConsumer;
@@ -35,19 +35,19 @@ public class RxParams<R, T> extends Params<T> {
     private boolean hasOnErrorConsumer;
 
 
-    protected RxParams(@NonNull Context context) {
+    protected Params(@NonNull Context context) {
         super(context);
         hasOnErrorConsumer = false;
     }
 
-    protected RxParams(@NonNull Context context, @NonNull Consumer<R> onNextConsumer) {
+    protected Params(@NonNull Context context, @NonNull Consumer<R> onNextConsumer) {
         super(context);
         this.onNextConsumer = onNextConsumer;
         hasOnErrorConsumer = false;
     }
 
-    protected RxParams(@NonNull Context context, @NonNull Consumer<R> onNextConsumer,
-                    @NonNull Consumer<? super Throwable> onErrorConsumer) {
+    protected Params(@NonNull Context context, @NonNull Consumer<R> onNextConsumer,
+                     @NonNull Consumer<? super Throwable> onErrorConsumer) {
         super(context);
         this.onNextConsumer = onNextConsumer;
         this.onErrorConsumer = onErrorConsumer;
@@ -55,9 +55,9 @@ public class RxParams<R, T> extends Params<T> {
         observable = null;
     }
 
-    protected RxParams(@NonNull Context context, @NonNull Observable<R> observable,
-                       @NonNull Consumer<R> onNextConsumer,
-                       @NonNull Consumer<? super Throwable> onErrorConsumer) {
+    protected Params(@NonNull Context context, @NonNull Observable<R> observable,
+                     @NonNull Consumer<R> onNextConsumer,
+                     @NonNull Consumer<? super Throwable> onErrorConsumer) {
         super(context);
         this.observable = observable;
         this.onNextConsumer = onNextConsumer;
@@ -80,31 +80,31 @@ public class RxParams<R, T> extends Params<T> {
         return onErrorConsumer;
     }
 
-    public static <R,T> RxParams<R,T> build(@NonNull Context context) {
-        return new RxParams<>(context);
+    public static <R,T> Params<R,T> build(@NonNull Context context) {
+        return new Params<>(context);
     }
 
-    public RxParams<R,T> setObservable(@NonNull Observable<R> observable) {
+    public Params<R,T> setObservable(@NonNull Observable<R> observable) {
         this.observable = observable;
         return this;
     }
 
-    public RxParams<R,T> setOnNextConsumer(@NonNull Consumer<R> consumer) {
+    public Params<R,T> setOnNextConsumer(@NonNull Consumer<R> consumer) {
         this.onNextConsumer = consumer;
         return this;
     }
 
-    public RxParams<R,T> setOnErrorConsumer(@NonNull Consumer<? super Throwable> consumer) {
+    public Params<R,T> setOnErrorConsumer(@NonNull Consumer<? super Throwable> consumer) {
         this.onErrorConsumer = consumer;
         return  this;
     }
 
-    public RxParams<R,T> setMainExecutor(@NonNull RxThreadExecutor executor) {
+    public Params<R,T> setMainExecutor(@NonNull ThreadExecutor executor) {
         this.mainExecutor = executor;
         return this;
     }
 
-    public RxParams<R,T> setPostExecutor(@NonNull RxThreadExecutor executor) {
+    public Params<R,T> setPostExecutor(@NonNull ThreadExecutor executor) {
         this.postExecutor = executor;
         return this;
     }

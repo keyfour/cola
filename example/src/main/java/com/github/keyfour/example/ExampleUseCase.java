@@ -20,13 +20,13 @@ package com.github.keyfour.example;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import io.github.keyfour13.rxcola.usecase.RxParams;
-import io.github.keyfour13.rxcola.usecase.RxUseCase;
+import io.github.keyfour13.rxcola.usecase.Params;
+import io.github.keyfour13.rxcola.usecase.UseCase;
 import io.reactivex.Observable;
 
-public class ExampleUseCase extends RxUseCase<String, String> {
+public class ExampleUseCase extends UseCase<String, String> {
 
-    public static class ExampleParams extends RxParams<String, String> {
+    public static class ExampleParams extends Params<String, String> {
         final String str = "Hello World!";
 
         protected ExampleParams(@NonNull Context context) {

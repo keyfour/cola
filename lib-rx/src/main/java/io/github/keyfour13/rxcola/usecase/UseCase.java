@@ -21,19 +21,19 @@ import io.github.keyfour.cola.usecase.UseCase;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
-public class RxUseCase<R,T> extends UseCase<RxParams<R,T>> {
+public class UseCase<R,T> extends UseCase<Params<R,T>> {
 
     protected CompositeDisposable disposables = new CompositeDisposable();
-    protected RxParams<R,T> params;
+    protected Params<R,T> params;
 
     @Override
-    public UseCase configure(RxParams<R, T> params) {
+    public UseCase configure(Params<R, T> params) {
         this.params = params;
         return this;
     }
 
     @Override
-    public RxUseCase<R,T> execute() {
+    public UseCase<R,T> execute() {
         Disposable disposable;
         if (params.hasOnErrorConsumer()) {
             disposable = params.getObservable().subscribe(params.getOnNextConsumer(),
@@ -46,7 +46,7 @@ public class RxUseCase<R,T> extends UseCase<RxParams<R,T>> {
     }
 
     @Override
-    public RxUseCase<R,T> cancel() {
+    public UseCase<R,T> cancel() {
         if (disposables != null && !disposables.isDisposed()) {
             disposables.dispose();
         }

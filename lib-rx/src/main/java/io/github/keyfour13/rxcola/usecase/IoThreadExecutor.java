@@ -17,11 +17,24 @@
 
 package io.github.keyfour13.rxcola.usecase;
 
-import io.github.keyfour.cola.usecase.Executor;
 import io.reactivex.Scheduler;
+import io.reactivex.schedulers.Schedulers;
 
-public abstract class RxThreadExecutor implements Executor<Scheduler> {
+public class IoThreadExecutor extends ThreadExecutor {
 
-    public abstract Scheduler getScheduler();
+    private static IoThreadExecutor executor;
 
+    private IoThreadExecutor() {}
+
+    public static IoThreadExecutor getInstance() {
+        if (executor == null) {
+            executor = new IoThreadExecutor();
+        }
+        return executor;
+    }
+
+    @Override
+    public Scheduler getScheduler() {
+        return Schedulers.io();
+    }
 }
