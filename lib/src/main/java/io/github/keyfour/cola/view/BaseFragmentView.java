@@ -31,9 +31,9 @@ import io.github.keyfour.cola.contract.ViewContract;
  */
 public abstract class BaseFragmentView<V> extends Fragment implements ViewContract<V> {
 
-    PresenterContract presenter;
+    protected PresenterContract<V> presenter;
 
-    public BaseFragmentView(@NonNull PresenterContract presenter) {
+    public BaseFragmentView(@NonNull PresenterContract<V> presenter) {
         this.presenter = presenter;
         this.presenter.setView(this);
     }
