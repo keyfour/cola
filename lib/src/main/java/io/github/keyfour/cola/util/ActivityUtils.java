@@ -16,6 +16,9 @@
 
 package io.github.keyfour.cola.util;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -30,20 +33,47 @@ import android.support.v4.app.FragmentTransaction;
 
 public class ActivityUtils {
 
-    public static void addFragmentToActivity (FragmentManager fragmentManager,
-                                              Fragment fragment, int frameId, boolean isAddToBackStack) {
+    public static void addFragmentToActivity (@NonNull FragmentManager fragmentManager,
+                                              @NonNull Fragment fragment, int frameId,
+                                              boolean isAddToBackStack) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(frameId, fragment);
         if (isAddToBackStack) transaction.addToBackStack(null);
         transaction.commit();
     }
 
-    public static void replaceFragmentInActivity (FragmentManager fragmentManager,
-                                                  Fragment fragment, int frameId, boolean isAddToBackStack) {
+    public static void addFragmentToActivity (@NonNull FragmentManager fragmentManager,
+                                              @NonNull Fragment fragment, int frameId) {
+        addFragmentToActivity(fragmentManager, fragment, frameId, true);
+    }
+
+    public static void replaceFragmentInActivity (@NonNull FragmentManager fragmentManager,
+                                                  @NonNull Fragment fragment, int frameId,
+                                                  boolean isAddToBackStack) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(frameId, fragment);
         if (isAddToBackStack) transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    public static void replaceFragmentInActivity (@NonNull FragmentManager fragmentManager,
+                                                  @NonNull Fragment fragment, int frameId) {
+        replaceFragmentInActivity(fragmentManager, fragment, frameId, true);
+    }
+
+    public static void openFragment(@NonNull FragmentManager fragmentManager,
+                                    @NonNull Fragment fragment, int frameId,
+                                    boolean isAddToBackStack) {
+        if (fragmentManager.findFragmentById(frameId) != null) {
+            replaceFragmentInActivity(fragmentManager, fragment, frameId, isAddToBackStack);
+        } else {
+            addFragmentToActivity(fragmentManager, fragment, frameId, isAddToBackStack);
+        }
+    }
+
+    public static void openFragment(@NonNull FragmentManager fragmentManager,
+                                    @NonNull Fragment fragment, int frameId) {
+        openFragment(fragmentManager, fragment, frameId, true);
     }
 
 }
