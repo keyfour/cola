@@ -16,8 +16,6 @@
 
 package io.github.keyfour.cola.util;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
