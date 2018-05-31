@@ -19,18 +19,10 @@ package io.github.keyfour.cola.data;
 /**
  * @author Alex Karpov <keyfour13@gmail.com> 2018
  */
-public abstract class SingleValueStorage<V> {
+public interface KeyValueDataStorage<K,V> {
 
-    protected final String filename;
-    protected final String key;
-
-    public SingleValueStorage (String filename, String key) {
-        this.filename = filename;
-        this.key = key;
-    }
-
-    public abstract void put(V value);
-    public abstract V get();
-    public abstract void remove();
+    void put(K key, V value);
+    V get(K key);
+    void remove(K key);
 
 }
