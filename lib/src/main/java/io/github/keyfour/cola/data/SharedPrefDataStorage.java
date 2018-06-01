@@ -1,16 +1,4 @@
-package io.github.keyfour.cola.data;
-
-import android.app.Application;
-import android.content.Context;
-import android.support.annotation.NonNull;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
-
-import io.github.keyfour.cola.util.SharedPreferencesUtils;
-
-``/*
+/*
  * Copyright 2018 Alexander Karpov <keyfour13@gmail.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,8 +13,12 @@ import io.github.keyfour.cola.util.SharedPreferencesUtils;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package io.github.keyfour.cola.data;
 
-        package io.github.keyfour.cola.data;
+import android.app.Application;
+import android.support.annotation.NonNull;
+
+import io.github.keyfour.cola.util.SharedPreferencesUtils;
 
 /**
  * @author Alex Karpov <keyfour13@gmail.com> 2018
@@ -41,7 +33,6 @@ public class SharedPrefDataStorage implements KeyValueDataStorage<String,Object>
     public SharedPrefDataStorage(Application application, String filename) {
         this.application = application;
         this.filename = filename;
-        data = new HashMap<>();
     }
 
 
@@ -53,17 +44,24 @@ public class SharedPrefDataStorage implements KeyValueDataStorage<String,Object>
     }
 
     @Override
-    public void put(String key, Object value) {
+    public void put(@NonNull String key, Object value) {
+        if (value == null) value = "";
         SharedPreferencesUtils.putValue(application, filename, key, value);
     }
 
     @Override
-    public Object get(String key) {
-        return SharedPreferencesUtils.getValue(application, filename, key, Object.class);
+    public Object get(@NonNull String key, Object value) {
+        if (value == null) value = "";
+        return SharedPreferencesUtils.getValue(application, filename, key, value.getClass());
     }
 
     @Override
     public void remove(String key) {
+        SharedPreferencesUtils.removeValue(application, filename, key);
+    }
 
+    @Override
+    public void clear() {
+        SharedPreferencesUtils.removeAllValues(application, filename);
     }
 }

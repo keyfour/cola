@@ -22,7 +22,8 @@ package io.github.keyfour.cola.data;
 public interface KeyValueDataStorage<K,V> {
 
     void put(K key, V value);
-    V get(K key);
+    V get(K key, V value);
     void remove(K key);
+    void clear();
 
 }
