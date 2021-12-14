@@ -6,7 +6,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:7.0.4'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -23,18 +23,17 @@ allprojects {
 
 subprojects {
     apply plugin: 'com.android.application'
-    apply plugin: 'com.github.dcendents.android-maven'
     group = 'com.github.keyfour'
 
     android {
-        compileSdkVersion 28
+        compileSdkVersion 32
         buildToolsVersion '28.0.3'
 
 
         defaultConfig {
             applicationId "com.github.keyfour.cola"
             minSdkVersion 15
-            targetSdkVersion 28
+            targetSdkVersion 32
             versionCode 1
             versionName "0.1-prerelease"
 
@@ -57,7 +56,6 @@ subprojects {
 
     dependencies{
         implementation fileTree(include: ['*.jar'], dir: 'libs')
-        implementation 'com.android.support:appcompat-v7:28.0.0'
         testImplementation 'junit:junit:4.12'
         androidTestImplementation 'com.android.support.test:runner:1.0.2'
         androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
