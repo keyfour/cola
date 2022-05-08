@@ -1,1 +1,0 @@
-include ':lib', ':example', ':lib-rx', ':lib-di', ':lib-data'

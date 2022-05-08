@@ -2,4 +2,4 @@
 
 ## Overview
 
-Some common classes organized as libraries for android applications
+Some common classes organized as library for android applications
